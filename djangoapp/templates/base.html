@@ -10,15 +10,57 @@
     </head>
     <body>
         <div class="container">
-            <nav class="nav">
-                <div class="navbar-brand">Juvas</div>
-                <a href="{% url "core:MovieList" %}">Movies</a>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">
+                        <a href="{% url "core:MovieList" %}">Movies</a>
+                    </li>
+                </ol>
             </nav>
         </div>
+
+
         <div class="container">
             <div class="row">
                 <div class="col-sm-8">
-                    {% block main %} {% endblock main %}
+                    {% block main %}
+                    {% if is_paginated %}
+                    <div class="nav">
+                        <ul class="pagination">
+                            <li class="page-item">
+                                <a href="{% url 'core:MovieList' %}?page=1" class="item-link">
+                                    First
+                                </a>
+                            </li>
+                            {% if page_obj.has_previous %}
+                            <li class="page-item">
+                                <a href="{% url 'core:MovieList' %}?page={{ page_obj.previous_page_number }}" class="link-item">
+                                    {{ page_obj.previous_page_number }}
+                                </a>
+                            </li>
+                            {% endif %}
+                            <li class="page-item active">
+                                <a href="{% url 'core:MovieList' %}?page={{ page_obj.number }}" class="item-link">
+                                    {{ page_obj.number }}
+                                </a>
+                            </li>
+                            {% if page_obj.has_next %}
+                            <li class="page-item">
+                                <a href="{% url 'core:MovieList' %}?page={{ page_obj.next_page_number }}" class="item-link">
+                                    {{ page_obj.next_page_number }}
+                                </a>
+                            </li>
+                            {% endif %}
+                            <li class="page-item">
+                                <a href="{% url 'core:MovieList' %}?page=last">
+                                    Last
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    {% endif %}
+                    {% endblock main %}
                 </div>
                 <div class="col-sm-4">
                     {% block sidebar %} {% endblock sidebar %}
@@ -27,7 +69,7 @@
             
         </div>
 
-    <script src="{% static 'jquery-3.3.1.slim.min.js' %}"></script>
+    <script src="{% static 'js/jquery-3.3.1.slim.min.js' %}"></script>
     <script src="{% static 'js/popper.min.js' %}"></script>
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
     </body>
