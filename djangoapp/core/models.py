@@ -16,7 +16,7 @@ class Movie(models.Model):
     plot = models.TextField()
     year = models.PositiveIntegerField()
     rating = models.IntegerField(choices=RATINGS, default=NOT_RATED)
-    run_time = models.PositiveIntegerField()
+    runtime = models.PositiveIntegerField()
     website = models.URLField(blank=True)
 
     class Meta:
