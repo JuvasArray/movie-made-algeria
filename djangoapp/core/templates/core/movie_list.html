@@ -1,20 +1,55 @@
 {% extends 'base.html' %}
 
-{% block title %}
-Movies
-{% endblock title %}
-
+{% block title %} 
+Movies 
+{% endblock title %} 
+    
 {% block main %}
 <ul>
-    {% for movie in object_list %}
-    <li>
-        <a class="" href="{% url 'core:MovieDetail' pk=movie.id %}">
-            {{ movie }}
-        </a>
-    </li>
-    {% endfor %}
+  {% for movie in object_list %}
+  <li>
+    <a class="" href="{% url 'core:MovieDetail' pk=movie.id %}">
+        {{ movie }}
+    </a>
+  </li>
+  {% endfor %}
 </ul>
-{% endblock main %}
+
+
+{% if is_paginated %}
+<div class="nav">
+  <ul class="pagination">
+    <li class="page-item">
+      <a href="{% url 'core:MovieList' %}?page=1" class="item-link">First</a>
+    </li>
+
+    {% if page_obj.has_previous %}
+    <li class="page-item">
+      <a href="{% url 'core:MovieList' %}?page={{ page_obj.previous_page_number }}" class="link-item">{{ page_obj.previous_page_number }}</a>
+    </li>
+    {% endif %}
+
+    <li class="page-item active">
+        <a href="{% url 'core:MovieList' %}?page={{ page_obj.number }}" class="item-link">
+            {{ page_obj.number }}</a>
+    </li>
+
+    {% if page_obj.has_next %}
+    <li class="page-item">
+      <a href="{% url 'core:MovieList' %}?page={{ page_obj.next_page_number }}" class="item-link">
+          {{ page_obj.next_page_number }}
+      </a>
+    </li>
+    {% endif %}
+
+    <li class="page-item">
+      <a href="{% url 'core:MovieList' %}?page=last">Last</a>
+    </li>
+  </ul>
+</div>
+{% endif %} 
+
+{% endblock main %} 
 
 {% block sidebar %}
 <p>Using https? {{ request.is_secure|yesno }}</p>
