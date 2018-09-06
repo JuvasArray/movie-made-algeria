@@ -1,10 +1,21 @@
-from django.contrib.auth.forms import UserCreationForm
-from django.urls import reverse_lazy
-from django.views.generic import CreateView
+from django.contrib.auth.models import User
+from django.shortcuts import render
 
-class RegisterView(CreateView):
+from user.forms import SignupForm
 
-    template_name = 'user/register.html'
-    form_class = UserCreationForm
-    success_url = reverse_lazy('core:MovieList')
-
+def register(request):
+    if request.method == 'POST':
+        form = SignupForm(request.POST)
+        if form.is_valid():
+            user = User.objects.create_user(
+                username = form.cleaned_data['username'],
+                first_name = form.cleaned_data['first_name'],
+                last_name = form.cleaned_data['last_name'],
+                email = form.cleaned_data['email'],
+                password = form.cleaned_data['password'],
+            )
+            user.save()
+            return render(request, 'user/register_done.html', {})
+    else:
+        form = SignupForm()
+    return render(request, 'user/register.html', {'form': form})
