@@ -1,12 +1,12 @@
 from django.contrib.auth.models import User
 from django import forms
-
+from user.models import Profile
 def validate_unique_user(error_message, **criteria):
     existent_user = User.objects.filter(**criteria)
     if existent_user:
         raise forms.ValidationError(error_message)
 
-class SignupForm(forms.Form):
+class SignupForm(forms.ModelForm):
 
     username = forms.CharField(max_length=10,widget=forms.TextInput({
         'placdholder': 'User name' }))
@@ -36,3 +36,14 @@ class SignupForm(forms.Form):
         if password1 != password2:
             raise forms.ValidationError('Passwords do not match')
         return password1
+
+class UserEditForm(forms.ModelForm):
+    class Meta:
+
+        model = User
+        fields = ['first_name', 'last_name', 'email']
+
+class ProfileEditForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ['birth_date', 'photo']
