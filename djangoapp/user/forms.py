@@ -6,7 +6,7 @@ def validate_unique_user(error_message, **criteria):
     if existent_user:
         raise forms.ValidationError(error_message)
 
-class SignupForm(forms.ModelForm):
+class SignupForm(forms.Form):
 
     username = forms.CharField(max_length=10,widget=forms.TextInput({
         'placdholder': 'User name' }))
